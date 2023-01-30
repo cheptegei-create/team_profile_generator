@@ -1,6 +1,5 @@
 // importing Manager constructor
-const { it } = require("node:test");
-const { describe } = require("yargs");
+
 const Manager = require("../lib/Manager");
 
 describe("Manager", () => {
