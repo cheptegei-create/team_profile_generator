@@ -21,7 +21,7 @@ Clone the repository from GitHub and download Node. Install inquirer module and 
 Use inquirer from your command line to answer questions about your project. Follow video
 
 
-![Demo Video](./assets/images/Video%20Demo.webm)
+![Demo Video](./assets/images/demo.gif.gif)
 
 
 ## Credits
