@@ -1,6 +1,5 @@
 // importing Employee constructor
-const { it } = require("node:test");
-const { describe } = require("yargs");
+
 const Employee = require("../lib/Employee");
 
 describe("Employee", () => {
