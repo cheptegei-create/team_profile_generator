@@ -5,6 +5,7 @@ const generateHtml = require("./src/generateHtml");
 const inquirer = require("inquirer");
 const fs = require("fs");
 
+// importing constructors
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
 const Engineer = require("./lib/Engineer");
@@ -12,79 +13,23 @@ const Engineer = require("./lib/Engineer");
 // team array
 const teamArray = [];
 
-const addManager = () => {
-  return inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "Who is the manager of this team?",
-        validate: (nameInput) => {
-          if (nameInput) {
-            return true;
-          } else {
-            console.log("Please enter the manager's name!");
-            return false;
-          }
-        },
-      },
-      {
-        type: "input",
-        name: "id",
-        message: "Please enter the manager's ID.",
-        validate: (nameInput) => {
-          if (isNaN(nameInput)) {
-            console.log("Please enter the manager's ID!");
-            return false;
-          } else {
-            return true;
-          }
-        },
-      },
-      {
-        type: "input",
-        name: "email",
-        message: "Please enter the manager's email.",
-        validate: (email) => {
-          valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-          if (valid) {
-            return true;
-          } else {
-            console.log("Please enter an email!");
-            return false;
-          }
-        },
-      },
-      {
-        type: "input",
-        name: "officeNumber",
-        message: "Please enter the manager's office number",
-        validate: (nameInput) => {
-          if (isNaN(nameInput)) {
-            console.log("Please enter an office number!");
-            return false;
-          } else {
-            return true;
-          }
-        },
-      },
-    ])
-    .then((managerInput) => {
-      const { name, id, email, officeNumber } = managerInput;
-      const manager = new Manager(name, id, email, officeNumber);
-
-      teamArray.push(manager);
-      console.log(manager);
-    });
+// function to generate HTML page file using file system
+const writeToFile = function (data) {
+  fs.writeFile("./dist/index.html", data, (err) => {
+    // if there is an error
+    if (err) {
+      console.log(err);
+      return;
+      // when the profile has been created
+    } else {
+      console.log(
+        "Your team profile has been successfully created! Please check out the index.html"
+      );
+    }
+  });
 };
 
 const addEmployee = () => {
-  console.log(`
-    >>>>>>>>>>>>
-    Adding employees to the team
-    >>>>>>>>>>>>
-    `);
-
   return inquirer
     .prompt([
       {
@@ -124,7 +69,9 @@ const addEmployee = () => {
         name: "email",
         message: "Please enter the employee's email.",
         validate: (email) => {
-          valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+          let valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+            email
+          );
           if (valid) {
             return true;
           } else {
@@ -166,7 +113,7 @@ const addEmployee = () => {
         default: false,
       },
     ])
-    .then((employeeData) => {
+    .then(function (employeeData) {
       // data for employee types
 
       let { name, id, email, role, github, school, confirmAddEmployee } =
@@ -185,6 +132,8 @@ const addEmployee = () => {
 
       teamArray.push(employee);
 
+      console.log(teamArray);
+
       if (confirmAddEmployee) {
         return addEmployee(teamArray);
       } else {
@@ -193,30 +142,87 @@ const addEmployee = () => {
     });
 };
 
-// function to generate HTML page file using file system
-const writeFile = (data) => {
-  fs.writeFile("./dist/index.html", data, (err) => {
-    // if there is an error
-    if (err) {
-      console.log(err);
-      return;
-      // when the profile has been created
-    } else {
-      console.log(
-        "Your team profile has been successfully created! Please check out the index.html"
-      );
-    }
-  });
+const addManager = () => {
+  return inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Who is the manager of this team?",
+        validate: (nameInput) => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log("Please enter the manager's name!");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "id",
+        message: "Please enter the manager's ID.",
+        validate: (nameInput) => {
+          if (isNaN(nameInput)) {
+            console.log("Please enter the manager's ID!");
+            return false;
+          } else {
+            return true;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "email",
+        message: "Please enter the manager's email.",
+        validate: (email) => {
+          let valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+            email
+          );
+          if (valid) {
+            return true;
+          } else {
+            console.log("Please enter an email!");
+            return false;
+          }
+        },
+      },
+      {
+        type: "input",
+        name: "officeNumber",
+        message: "Please enter the manager's office number",
+        validate: (nameInput) => {
+          if (isNaN(nameInput)) {
+            console.log("Please enter an office number!");
+            return false;
+          } else {
+            return true;
+          }
+        },
+      },
+    ])
+    .then(function (managerInput) {
+      const { name, id, email, officeNumber } = managerInput;
+      const manager = new Manager(name, id, email, officeNumber);
+
+      teamArray.push(manager);
+      console.log(manager);
+    });
 };
 
-addManager()
+function init() {
+
+  addManager()
   .then(addEmployee)
   .then((teamArray) => {
     return generateHtml(teamArray);
   })
-  .then((pageHTML) => {
-    return writeFile(pageHTML);
+  .then((updateMyTeam) => {
+    return writeToFile(updateMyTeam);
   })
   .catch((err) => {
     console.log(err);
   });
+}
+
+init();

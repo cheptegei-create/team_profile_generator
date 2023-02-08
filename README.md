@@ -18,7 +18,7 @@ Clone the repository from GitHub and download Node. Install inquirer module and 
 
 ## Usage
 
-Use inquirer from your command line to answer questions about your project. Follow video
+Use inquirer from your command line to answer questions about your project. Follow video in the assets folder
 
 
 ![Demo Video](./assets/images/demo.gif.gif)
