@@ -3,7 +3,8 @@
     "inquirer": "^8.2.4"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node index.js"
   },
   "devDependencies": {
     "jest": "^29.4.1"
